@@ -8,10 +8,10 @@ def createNewBase():
         cur.execute("""CREATE TABLE IF NOT EXISTS Screen (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         name TEXT NOT NULL,
-        usable INTEGER NOT NULL DEFAULT 0,
-        readed BOOLEAN NOT NULL DEFAULT False,
+        usable INTEGER NOT NULL DEFAULT 1,
+        readed INTEGER NOT NULL DEFAULT 0,
         error_log TEXT,
-        strline text
+        strline TEXT
         )""")
 
         cur.execute("""CREATE TABLE IF NOT EXISTS Fields (
@@ -28,8 +28,8 @@ def createNewBase():
         commission INTEGER,
         mileage INTEGER,
         balance REAL,
-        name text NOT NULL,
-        verified BOOLEAN NOT NULL DEFAULT False     
+        name TEXT NOT NULL,
+        verified INTEGER NOT NULL DEFAULT 0     
         )""")
 
         cur.execute("""CREATE TABLE IF NOT EXISTS Truedate (
