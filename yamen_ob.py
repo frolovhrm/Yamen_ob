@@ -176,6 +176,14 @@ if notReadedFilesInBase > 0:
                 cursor = con.cursor()
                 # try:
                 fields.date = str(Fields.nameToDate(fields.name))  # выделяем дату из имени
+                # datetime_obj = (Fields.nameToDate(fields.name))  # выделяем дату из имени
+                # fields.date = str(datetime_obj.date())
+                # fields.time = str(datetime_obj.time())
+                # print((datetime_obj.date()))
+                # print(f'дата: {date_time_obj.date()}')
+                # print(f'время: {date_time_obj.time()}')
+
+
                 # print(f"5) Дата = {fields.date}")
                 if fields.date < '2022-04-04':
                     # print(f'5.1) old way')
