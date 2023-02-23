@@ -190,11 +190,11 @@ def readTextToFields(fields, str_line):
 
         position += 1
 
-    ''' Получение даты из имени файла'''
-
-    str_line = fields.name.split('_')
-    datetimeplus = str_line[1]
-    date_split = datetimeplus.split('-')
-    date_split.pop(-1)
-    date_time_str = ' '.join(date_split)
-    fields.date = datetime.datetime.strptime(date_time_str, '%Y %m %d %H %M %S')
+    # ''' Получение даты из имени файла'''
+    #
+    # str_line = fields.name.split('_')
+    # datetimeplus = str_line[1]
+    # date_split = datetimeplus.split('-')
+    # date_split.pop(-1)
+    # date_time_str = ' '.join(date_split)
+    # fields.date = datetime.datetime.strptime(date_time_str, '%Y %m %d %H %M %S')

@@ -196,11 +196,11 @@ def readTextToFields2(fields, str_line):
             # print(f'Balance - {fields.balance}')
         position += 1
 
-    ''' Получение даты из имени файла'''
-    date_str = fields.name.split('_')
-    datetimeplus = date_str[1]
-    date_split = datetimeplus.split('-')
-    date_split.pop(-1)
-    date_time_str = ' '.join(date_split)
-    fields.date = datetime.datetime.strptime(date_time_str, '%Y %m %d')
-    # fields.time = datetime.datetime.strptime(date_time_str, '%H %M %S')
+    # ''' Получение даты из имени файла'''
+    # date_str = fields.name.split('_')
+    # datetimeplus = date_str[1]
+    # date_split = datetimeplus.split('-')
+    # date_split.pop(-1)
+    # date_time_str = ' '.join(date_split)
+    # fields.date = datetime.datetime.strptime(date_time_str, '%Y %m %d')
+    # # fields.time = datetime.datetime.strptime(date_time_str, '%H %M %S')
