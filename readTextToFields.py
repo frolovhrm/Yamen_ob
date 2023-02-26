@@ -4,6 +4,7 @@ import re
 
 def readTextToFields(fields, str_line):
     """ Парсим строку, достаем данные по полям"""
+    fields.error_log[0] = 1
 
     def getfloat(str):
         # print(str)
@@ -23,7 +24,6 @@ def readTextToFields(fields, str_line):
         # print(new_str)
         new_str = new_str.replace('«', '')
 
-
         if new_str.isdigit():
             result = float(new_str)
             # print(f'Result 1 - {result}')
@@ -35,7 +35,7 @@ def readTextToFields(fields, str_line):
 
             except IndexError:
                 print(f'Ошибка функции getFloat old >>> {new_str} - {fields.name}')
-                result = 0.0
+                fields.error_log[11] = 1
         return result
 
     # print(str_line)
@@ -64,6 +64,8 @@ def readTextToFields(fields, str_line):
             break
         if str_line[position] == 'эту' and str_line[position + 1] == 'неделю':
             break
+        if str_line[position] == 'Баланс' and str_line[position + 1] == 'Х':
+            break
 
         if str_line[position] == 'Сегодня':
             if str_line[position + 1] == '0,00':
@@ -89,6 +91,9 @@ def readTextToFields(fields, str_line):
             except:
                 print(
                     f'Error active old {fields.name} \n {str_line} \n- {str_line[position + 1]}/{str_line[position + 2]}')
+                fields.error_log[1] = 1
+                fields.error_log[2] = 1
+                fields.error_log[3] = 1
             position += 1
             continue
 
@@ -102,6 +107,7 @@ def readTextToFields(fields, str_line):
             except:
                 print(f'Error all_profit old >{all_profit_str}<')
                 # print(getfloat(all_profit_str))
+                fields.error_log[4] = 1
 
             position += 1
             continue
@@ -113,6 +119,7 @@ def readTextToFields(fields, str_line):
                 fields.cart_profit = getfloat(cart_profit_str)
             except:
                 print(f'Error card old {fields.name} - {cart_profit_str}')
+                fields.error_log[6] = 1
 
         """ Выручка наличные """
         if str_line[position] == 'карта':
@@ -125,6 +132,7 @@ def readTextToFields(fields, str_line):
                     fields.cash_profit = getfloat(cash_profit_str)
                 except:
                     print(f"Ошибка cash Old {fields.name} - {cash_profit_str} - {str_line}")
+                    fields.error_log[5] = 1
             position += 1
             continue
 
@@ -139,6 +147,8 @@ def readTextToFields(fields, str_line):
                         fields.orders = int(orders_num[0])
                     except:
                         print(f'Error order old {fields.name} - {str_line[position - 1]} - {str_line}')
+                        fields.error_log[7] = 1
+                        # print(fields.error_log)
             position += 1
             continue
 
@@ -153,6 +163,7 @@ def readTextToFields(fields, str_line):
                 fields.commission = getfloat(commission_str)
             except:
                 print(f'Error commission old {fields.name} - {commission_str}')
+                fields.error_log[8] = 1
             position += 1
             continue
 
@@ -172,7 +183,9 @@ def readTextToFields(fields, str_line):
                 mileage_num = re.findall(r'\d*', mileage_str)
                 fields.mileage = int(mileage_num[0])
             except:
-                print(f'Error mileage old {fields.name} - {str_line[position + 1]}/{str_line[position + 2]} - {str_line}')
+                print(
+                    f'Error mileage old {fields.name} - {str_line[position + 1]}/{str_line[position + 2]} - {str_line}')
+                fields.error_log[9] = 1
             position += 1
             continue
 
@@ -187,6 +200,7 @@ def readTextToFields(fields, str_line):
                     fields.balance = getfloat(balance_str)
                 except:
                     print(f'Error balanse old {fields.name} \n {str_line} \n- {balance_str}')
+                    fields.error_log[10] = 1
 
         position += 1
 

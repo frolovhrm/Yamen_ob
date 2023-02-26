@@ -5,7 +5,7 @@ error_log = ''
 
 def readTextToFields2(fields, str_line):
     """ Парсим строку, достаем данные по полям"""
-
+    fields.error_log[0] = 2
 
     def getfloat(str):
         # print(str)
@@ -35,7 +35,8 @@ def readTextToFields2(fields, str_line):
                 # print(f'getfloat 5.2 - {result}')
             except:
                 # print(f'Ошибка функции getFloat new - {new_str} -< {str_line} >- {fields.name}')
-                result = 0.0
+                fields.error_log[11] = 1
+
         return result
 
     # print(str_line)
@@ -81,6 +82,8 @@ def readTextToFields2(fields, str_line):
                         fields.orders = int(str_line[position - 1])
                     except ValueError:
                         print(f'Error orders new - {str_line[position - 1]} - {fields.name} - {str_line}')
+                        fields.error_log[7] = 1
+
                     # print(f'orders - {fields.orders}')
             position += 1
             continue
@@ -92,6 +95,9 @@ def readTextToFields2(fields, str_line):
                 fields.activ = int(str_line[position + 1])
             except:
                 print(f'Activ - {fields.name} - {str_line[position + 1]} - {str_line}')
+                fields.error_log[1] = 1
+
+
 
             fields.rait = float(str_line[position + 2])
             if str_line[position + 3] == 'Бронза':
@@ -120,7 +126,7 @@ def readTextToFields2(fields, str_line):
                 # print(f'All profit new (try) {fields.all_profit}')
             except:
                 print(f"Ошибка All_profit_new {all_profit_str} - {fields.name} - {str_line}")
-
+                fields.error_log[4] = 1
             # print(f'All_profit - {fields.all_profit}')
             position += 1
             continue
@@ -136,7 +142,9 @@ def readTextToFields2(fields, str_line):
             try:
                 fields.cart_profit = getfloat(cart_profit_str)
             except:
-                print(f"Ошибка comission - {cart_profit_str}")
+                print(f"Ошибка cart_profit_new - {cart_profit_str}")
+                fields.error_log[6] = 1
+
 
             # print('Cart - ', fields.cart_profit)
             position += 1
@@ -154,7 +162,9 @@ def readTextToFields2(fields, str_line):
                 try:
                     fields.cash_profit = getfloat(cash_profit_str)
                 except:
-                    print(f'Ошибка в позиции {str_line[position]}')
+                    print(f'Ошибка cash_profit_new {str_line[position]}')
+                    fields.error_log[5] = 1
+
 
             # print(f'cash_profit - {fields.cash_profit}')
             position += 1
@@ -173,7 +183,7 @@ def readTextToFields2(fields, str_line):
                 fields.commission = getfloat(commission_str)
             except:
                 print(f"Ошибка comission new - {commission_str} - {fields.name} - {str_line}")
-
+                fields.error_log[8] = 1
             # print(f'Comission - {fields.commission}')
             position += 1
             continue
@@ -193,6 +203,8 @@ def readTextToFields2(fields, str_line):
                 # print(f'Balance (else) new{fields.balance}')
             except:
                 print(f"Ошибка balance new - {balance_str} - {fields.name}  - {str_line}")
+                fields.error_log[10] = 1
+
             # print(f'Balance - {fields.balance}')
         position += 1
 

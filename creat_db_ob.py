@@ -10,7 +10,7 @@ def createNewBase():
         name TEXT NOT NULL,
         usable INTEGER NOT NULL DEFAULT 1,
         readed INTEGER NOT NULL DEFAULT 0,
-        error_log TEXT,
+        errors_log TEXT,
         strline TEXT
         )""")
 

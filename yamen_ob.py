@@ -1,4 +1,5 @@
 import datetime
+import json
 import sqlite3 as sq
 import os
 import pytesseract
@@ -20,6 +21,19 @@ class Screen:
     def __int__(self):
         self.screen_id = ''
         self.name = ''
+        self.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        """ Разряды лога 0 - версия парсера
+                        1 - activ
+                        2 - rait
+                        3 - grate
+                        4 - all_profit
+                        5 - cash_profit
+                        6 - cart_profit
+                        7 - orders
+                        8 - commission
+                        9 - mileage
+                        10 - balance
+                        11 - ошибка getFloat """
 
     def findNewFiles(self):  # Отбираем подходящие файлы для сканирования и складываем их имена в базу
         count = 0
@@ -90,12 +104,7 @@ class Fields(Screen):
         datetime_split = datetimeplus.split('-')
         datetime_split.pop(-1)
         date_time_str = ' '.join(datetime_split)
-        # print(type(date_time_str))
-        # date_time_obj = datetime.strptime(date_time_str, '%Y %m %d %H %M %S')
         date_time_obj = datetime.datetime.strptime(date_time_str, '%Y %m %d %H %M %S')
-        # print(type(date_time_obj))
-        # print(f'дата: {date_time_obj.date()}')
-        # print(f'время: {date_time_obj.time()}')
         return date_time_obj
 
     def makeNullFields(self):
@@ -116,6 +125,7 @@ class Fields(Screen):
             # try:
             cursor.execute(
                 "SELECT id, name FROM Screen WHERE readed = '0' AND usable = '1' LIMIT 1")  # Получаем первую запись из базы
+            fields.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             getfilename = cursor.fetchone()
             fields.name = getfilename[1]
             screen.screen_id = getfilename[0]
@@ -124,6 +134,7 @@ class Fields(Screen):
             # print(f'3) Распознали')
             # print(fields.name)
             # print(screen.screen_id)
+            # print(f'тест -{fields.error_log}')
             stringforbase = string.replace('?', ' ')  # Готовим специальную строку для записи в базу
             stringforbase = stringforbase.replace("'", ' ')
             stringforbase = "'" + stringforbase + "'"
@@ -196,6 +207,13 @@ if notReadedFilesInBase > 0:
                     # print(f'5.2) new way')
                     readTextToFields2(fields, string_split)  # Расшифровываем и раскладываем по полям базы
                     # print(string_split)
+                error_log_dump = json.dumps(fields.error_log)
+                error_log_dump = "'" + error_log_dump + "'"
+                # print(type(error_log_dump))
+                # print(error_log_dump)
+                # print(f'тест 2 -{fields.error_log}')
+                cursor.execute(f"UPDATE Screen SET errors_log = {error_log_dump}  WHERE id = {screen.screen_id}")
+
                 # except:
                 #     print(f'Нужные данные из файла - {fields.name} не получены')
                 #     listNotParsFile.append(fields.name)
