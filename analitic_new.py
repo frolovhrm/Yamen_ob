@@ -25,6 +25,7 @@ def checkduble():
         cursor = con.cursor()
         cursor.execute("SELECT DISTINCT date, date_time FROM Fields WHERE verified = 0")
         list_date = cursor.fetchall()
+        print(list_date)
         # print(null_time)
         # print(shift_time)
         # date_time = list_date[0]
@@ -40,7 +41,7 @@ def checkduble():
         for i in list_date:
             date_old = i[0]
             date_time = datetime.datetime.strptime(i[1], '%Y-%m-%d %H:%M:%S')
-            # print(date_time)
+            print(date_old, date_time)
             null_date_time = datetime.datetime.strptime(f'{date_old} {null_time}', '%Y-%m-%d %H:%M:%S')
             shift_date_time = datetime.datetime.strptime(f'{date_old} {shift_time}', '%Y-%m-%d %H:%M:%S')
             if null_date_time < date_time < shift_date_time:
@@ -49,8 +50,8 @@ def checkduble():
             else:
                 date = i[0]
             print(date_old, date)
-        list_all_date.append(date)
-        print(list_all_date)
+            list_all_date.append(date)
+    print(f'список всех дат {list_all_date}')
 
     if len(list_all_date) > 0:
         for i in list_all_date:
