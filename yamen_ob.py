@@ -69,14 +69,15 @@ class Fields(Screen):
         super().__int__()
         self.id = 0  # 1
         self.date = 'null'  # 2
-        self.time = 'null'  # 2
-        self.activ = 0  # 4
-        self.rait = 0  # 5
-        self.grate = 0  # 6
-        self.all_profit = 0.0  # 7
-        self.cash_profit = 0.0  # 8
-        self.cart_profit = 0.0  # 9
-        self.orders = 0  # 10
+        self.time = 'null'  # 3
+        self.date_time = 'null' # 4
+        self.activ = 0  # 5
+        self.rait = 0  # 6
+        self.grate = 0  # 7
+        self.all_profit = 0.0  # 8
+        self.cash_profit = 0.0  # 9
+        self.cart_profit = 0.0  # 10
+        self.orders = 0  # 11
         self.commission = 0.0  # 12
         self.mileage = 0  # 13
         self.balance = 0.0  # 14
@@ -191,6 +192,8 @@ if notReadedFilesInBase > 0:
                 # print(screen.screen_id)
                 fields.date = str(datetime_obj.date())
                 fields.time = str(datetime_obj.time())
+                fields.date_time = datetime_obj
+
                 # print((datetime_obj.date()))
                 # print(f'дата: {date_time_obj.date()}')
                 # print(f'время: {date_time_obj.time()}')
@@ -227,24 +230,24 @@ if notReadedFilesInBase > 0:
                         f"UPDATE Screen SET usable = 0  WHERE name = {fields.name}")  # Поля равны нулю - статус 0
                 else:
 
-                    list_filds = [fields.date, fields.time, fields.activ, fields.rait, fields.grate, fields.all_profit,
+                    list_filds = [fields.date, fields.time, fields.date_time, fields.activ, fields.rait, fields.grate, fields.all_profit,
                                   fields.cash_profit, fields.cart_profit,
                                   fields.orders, fields.commission, fields.mileage, fields.balance,
                                   str(fields.name), fields.verified]
                     # print(list_filds)
-                    cursor.execute("INSERT INTO Fields VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    cursor.execute("INSERT INTO Fields VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                    list_filds)
                     fields.name = fields.name.replace("'", "")
                     cursor.execute('UPDATE Screen SET readed = ? WHERE name = ?', (True, fields.name))
 
 print(f'Готово! \n ')
 #
-Screen.notReadedFilesInBase(screen)
-
-question = input('Проверить базу на наличие задвоенных данных и сформировать окончательную таблицу (д\y - да) - ')
-if question == 'y' or question == 'д':
-    checkduble()
-
+# Screen.notReadedFilesInBase(screen)
+#
+# question = input('Проверить базу на наличие задвоенных данных и сформировать окончательную таблицу (д\y - да) - ')
+# if question == 'y' or question == 'д':
+#     checkduble()
+#
 #
 # print(f'Нераспарсеных файлов за сессию {len(listNotParsFile)}')
 # for i in listNotParsFile:

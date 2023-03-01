@@ -18,6 +18,7 @@ def createNewBase():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         date TEXT,
         time TEXT,
+        date_time TEXT,
         activ INTEGER,
         rait REAL,
         grate INTEGER,
