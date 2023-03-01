@@ -6,7 +6,7 @@ def createNewBase():
         cur = con.cursor()
 
         cur.execute("""CREATE TABLE IF NOT EXISTS Screen (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         usable INTEGER NOT NULL DEFAULT 1,
         readed INTEGER NOT NULL DEFAULT 0,
@@ -30,7 +30,7 @@ def createNewBase():
         mileage INTEGER,
         balance REAL,
         name TEXT NOT NULL,
-        verified INTEGER NOT NULL DEFAULT 0     
+        verified INTEGER NOT NULL DEFAULT 0
         )""")
 
         cur.execute("""CREATE TABLE IF NOT EXISTS Truedate (
