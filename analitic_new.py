@@ -1,5 +1,6 @@
 import sqlite3 as sq
 import datetime
+from tqdm import tqdm
 
 base_name = 'yamen_ob.db'
 one_date = '2021-07-21'
@@ -54,6 +55,7 @@ def checkduble():
 
     if len(list_all_date) > 0:
         for i in list_all_date:
+        # for i in tqdm(range(list_all_date)):
 
             min_date_time = datetime.datetime.strptime(f'{i} {shift_time}', '%Y-%m-%d %H:%M:%S')
             max_date_time = min_date_time + datetime.timedelta(days=1)
@@ -94,8 +96,8 @@ def checkduble():
                     orders = fields[6]
                 if commission < fields[7]:
                     commission = fields[7]
-                if balance < fields[9]:
-                    balance = fields[9]
+                if balance < fields[8]:
+                    balance = fields[8]
 
                 with sq.connect(base_name) as con:  # помечаем запись как проверенную
                     cursor = con.cursor()

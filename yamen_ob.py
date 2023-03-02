@@ -8,7 +8,7 @@ from creat_db_ob import createNewBase
 from readTextToFields import readTextToFields
 from readTextToFields2 import readTextToFields2
 from tqdm import tqdm
-from analitic import checkduble
+from analitic_new import checkduble
 
 screenshot_path = 'C:\\Python projects\\Screenshort\\'
 base_name = 'yamen_ob.db'
@@ -238,14 +238,9 @@ if notReadedFilesInBase > 0:
                     cursor.execute('UPDATE Screen SET readed = ? WHERE name = ?', (True, fields.name))
 
 print(f'Готово! \n ')
-#
-# Screen.notReadedFilesInBase(screen)
-#
-# question = input('Проверить базу на наличие задвоенных данных и сформировать окончательную таблицу (д\y - да) - ')
-# if question == 'y' or question == 'д':
-#     checkduble()
-#
-#
-# print(f'Нераспарсеных файлов за сессию {len(listNotParsFile)}')
-# for i in listNotParsFile:
-#     print(i)
+
+Screen.notReadedFilesInBase(screen)
+
+question = input('Проверить базу на наличие задвоенных данных и сформировать окончательную таблицу (д\y - да) - ')
+if question == 'y' or question == 'д':
+    checkduble()
