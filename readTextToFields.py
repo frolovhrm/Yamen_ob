@@ -167,27 +167,27 @@ def readTextToFields(fields, str_line):
             position += 1
             continue
 
-        """ Пробег """
-        if str_line[position] == 'Пробег':
-            mileage_str = str_line[position + 1]
-            if str_line[position + 1] == 'О':
-                fields.mileage = 0
-                position += 1
-                continue
-            if str_line[position + 1] == 'З':
-                fields.mileage = 3
-                position += 1
-                continue
-            try:
-                mileage_str = str_line[position + 1] + str_line[position + 2]
-                mileage_num = re.findall(r'\d*', mileage_str)
-                fields.mileage = int(mileage_num[0])
-            except:
-                # print(
-                #     f'Error mileage old {fields.name} - {str_line[position + 1]}/{str_line[position + 2]} - {str_line}')
-                fields.error_log[9] = 1
-            position += 1
-            continue
+        # """ Пробег """
+        # if str_line[position] == 'Пробег':
+        #     mileage_str = str_line[position + 1]
+        #     if str_line[position + 1] == 'О':
+        #         fields.mileage = 0
+        #         position += 1
+        #         continue
+        #     if str_line[position + 1] == 'З':
+        #         fields.mileage = 3
+        #         position += 1
+        #         continue
+        #     try:
+        #         mileage_str = str_line[position + 1] + str_line[position + 2]
+        #         mileage_num = re.findall(r'\d*', mileage_str)
+        #         fields.mileage = int(mileage_num[0])
+        #     except:
+        #         # print(
+        #         #     f'Error mileage old {fields.name} - {str_line[position + 1]}/{str_line[position + 2]} - {str_line}')
+        #         fields.error_log[9] = 1
+        #     position += 1
+        #     continue
 
         if str_line[position] == 'Баланс':
             if position < len(str_line) - 4:

@@ -17,3 +17,7 @@ with sq.connect(base_name) as con:
     cursor = con.cursor()
     ver = f"UPDATE Fields SET verified = 0 "
     cursor.execute(ver)
+
+    cursor = con.cursor()
+    ver = f"DELETE FROM Truedate "
+    cursor.execute(ver)

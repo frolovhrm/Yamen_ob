@@ -21,7 +21,7 @@ class Screen:
     def __int__(self):
         self.screen_id = ''
         self.name = ''
-        self.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         """ Разряды лога 0 - версия парсера
                         1 - activ
                         2 - rait
@@ -31,9 +31,8 @@ class Screen:
                         6 - cart_profit
                         7 - orders
                         8 - commission
-                        9 - mileage
-                        10 - balance
-                        11 - ошибка getFloat """
+                        9 - balance
+                        10 - ошибка getFloat """
 
     def findNewFiles(self):  # Отбираем подходящие файлы для сканирования и складываем их имена в базу
         count = 0
@@ -79,7 +78,6 @@ class Fields(Screen):
         self.cart_profit = 0.0  # 10
         self.orders = 0  # 11
         self.commission = 0.0  # 12
-        self.mileage = 0  # 13
         self.balance = 0.0  # 14
         self.name = ""  # 15
         self.verified = False  # 16
@@ -117,7 +115,6 @@ class Fields(Screen):
         fields.cart_profit = 0.0
         fields.orders = 0
         fields.commission = 0
-        fields.mileage = 0
         fields.balance = 0.0
 
     def getNewFile(self):
@@ -126,7 +123,7 @@ class Fields(Screen):
             # try:
             cursor.execute(
                 "SELECT id, name FROM Screen WHERE readed = '0' AND usable = '1' LIMIT 1")  # Получаем первую запись из базы
-            fields.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            fields.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             getfilename = cursor.fetchone()
             fields.name = getfilename[1]
             screen.screen_id = getfilename[0]
@@ -232,10 +229,10 @@ if notReadedFilesInBase > 0:
 
                     list_filds = [fields.date, fields.time, fields.date_time, fields.activ, fields.rait, fields.grate, fields.all_profit,
                                   fields.cash_profit, fields.cart_profit,
-                                  fields.orders, fields.commission, fields.mileage, fields.balance,
+                                  fields.orders, fields.commission, fields.balance,
                                   str(fields.name), fields.verified]
                     # print(list_filds)
-                    cursor.execute("INSERT INTO Fields VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    cursor.execute("INSERT INTO Fields VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                    list_filds)
                     fields.name = fields.name.replace("'", "")
                     cursor.execute('UPDATE Screen SET readed = ? WHERE name = ?', (True, fields.name))

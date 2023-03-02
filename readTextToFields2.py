@@ -100,6 +100,8 @@ def readTextToFields2(fields, str_line):
 
 
             fields.rait = float(str_line[position + 2])
+            if str_line[position + 3] == 'Серебро':
+                fields.grate = 4
             if str_line[position + 3] == 'Бронза':
                 fields.grate = 3
             if str_line[position + 3] == 'Золото':

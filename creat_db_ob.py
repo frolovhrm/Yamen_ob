@@ -27,7 +27,6 @@ def createNewBase():
         cart_profit REAL,
         orders INTEGER,
         commission INTEGER,
-        mileage INTEGER,
         balance REAL,
         name TEXT NOT NULL,
         verified INTEGER NOT NULL DEFAULT 0
@@ -44,9 +43,12 @@ def createNewBase():
         cart_profit REAL,
         orders INTEGER,
         commission INTEGER,
-        mileage INTEGER,
         balance REAL
 
         )""")
 
     # print('Новая база созданна')
+
+
+if __name__ == '__main__':
+    createNewBase()
