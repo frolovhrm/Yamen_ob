@@ -25,17 +25,6 @@ def checkduble():
         cursor = con.cursor()
         cursor.execute("SELECT DISTINCT date, date_time FROM Fields WHERE verified = 0")
         list_date = cursor.fetchall()
-        # print(list_date)
-        # print(null_time)
-        # print(shift_time)
-        # date_time = list_date[0]
-        # print(date_time[1])
-        # date_time_new = datetime.datetime.strptime(date_time[1], '%Y-%m-%d %H:%M:%S')
-        # date_time_new2 = date_time_new + datetime.timedelta(days=-1)
-        # print(type(date_time_new))
-        # print(date_time_new2)
-        # date_new = str(date_time_new.date())
-        # print(date_new)
 
     if len(list_date) > 0:
         for i in list_date:
@@ -53,11 +42,12 @@ def checkduble():
             list_all_date.append(date)
     # print(f'список всех дат {list_all_date}')
 
-    if len(list_all_date) > 0:
-        for i in list_all_date:
-        # for i in tqdm(range(list_all_date)):
+    len_list_all_date = len(list_all_date)
 
-            min_date_time = datetime.datetime.strptime(f'{i} {shift_time}', '%Y-%m-%d %H:%M:%S')
+    if len_list_all_date > 0:
+        for num in tqdm(range(len_list_all_date)):
+
+            min_date_time = datetime.datetime.strptime(f'{list_all_date[num]} {shift_time}', '%Y-%m-%d %H:%M:%S')
             max_date_time = min_date_time + datetime.timedelta(days=1)
 
             with sq.connect(base_name) as con:
@@ -105,16 +95,12 @@ def checkduble():
                     cursor.execute(ver)
 
             if activ + rait + grate > 0:  # Пишем данные в базу новой строкой
-                s = f"INSERT INTO Truedate VALUES(null, '{i}', {activ}, {rait}, {grate}, {all_profit}," \
+                s = f"INSERT INTO Truedate VALUES(null, '{list_all_date[num]}', {activ}, {rait}, {grate}, {all_profit}," \
                     f" {cash_profit}, {cart_profit}, {orders}, {commission}, {balance}) "
                 # print(s)
                 with sq.connect(base_name) as con:  # помечаем запись как проверенную
                     cursor = con.cursor()
                     cursor.execute(s)
-                # s = f"пишем"
-            # else:
-            #     s = f"пустая сторока"
-            # print(f'result - {s}')
             activ = 0
             rait = 0.0
             grate = 0
@@ -124,19 +110,9 @@ def checkduble():
             orders = 0
             commission = 0.0
             balance = 0.0
-    print('Финальные данные сохранены в базе')
+    print('Финальные данные сохранены в базе, таблица сформирована.')
 
 
 if __name__ == '__main__':
     checkduble()
 
-# id_ = int(i[0])
-# new_date = i[1]
-# new_time = i[2]
-# date_obj = datetime.datetime.strptime(f'{new_date} {new_time}', '%Y-%m-%d %H:%M:%S')
-# print(date_obj)
-# min_date_time = datetime.datetime.strptime(f'{new_date} {shift}', '%Y-%m-%d %H:%M:%S')
-# max_date_time = min_date_time + datetime.timedelta(days=1)
-# print(f'min_date - {min_date_time}')
-# print(f'max_time - {max_date_time}')
-# if date_obj > min_date_time or date_obj < max_date_time:

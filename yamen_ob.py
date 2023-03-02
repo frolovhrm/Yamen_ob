@@ -50,7 +50,7 @@ class Screen:
                             cursor.execute(
                                 f"INSERT INTO Screen VALUES(null, {screen.name}, 1, False, null, null)")
                             count += 1
-        print(f'... найдено и добавленно в базу новых файлов - {count} \n')
+        print(f'... найдено подходящих для дальнейшей работы и добавленно в базу - {count} файлов \n')
 
     def notReadedFilesInBase(self):
         with sq.connect(base_name) as con:  # Проверяем количество доступных для расшифровки файлов
