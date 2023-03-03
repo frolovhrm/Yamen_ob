@@ -4,20 +4,30 @@ import sqlite3 as sq
 
 base_name = 'yamen_ob.db'
 
-n_date = '2021-08-07'
-
+# n_date = '2021-08-07'
+#
 with sq.connect(base_name) as con:
-    # cursor = con.cursor()
-    # cursor.execute("SELECT id, date "
-    #                "FROM Fields WHERE verified = 0 and date(date) = ?", ('2021-08-07',))
-    # list_count = cursor.fetchall()
-    # for item in list_count:
-    #     print(item)
-
+#     # cursor = con.cursor()
+#     # cursor.execute("SELECT id, date "
+#     #                "FROM Fields WHERE verified = 0 and date(date) = ?", ('2021-08-07',))
+#     # list_count = cursor.fetchall()
+#     # for item in list_count:
+#     #     print(item)
+#
     cursor = con.cursor()
     ver = f"UPDATE Fields SET verified = 0 "
     cursor.execute(ver)
-
+# #
     cursor = con.cursor()
     ver = f"DELETE FROM Truedate "
     cursor.execute(ver)
+
+# id_list = [21, 22, 23, 24, 25, 26]
+#
+# for i in id_list:
+#     with sq.connect(base_name) as con:
+#         cursor = con.cursor()
+#         ver = f"UPDATE Fields SET verified = 0 WHERE id = {i}  "
+#         cursor.execute(ver)
+
+
