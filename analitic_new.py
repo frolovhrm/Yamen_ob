@@ -15,7 +15,7 @@ def checkduble():
         cursor.execute("SELECT DISTINCT date, date_time FROM Fields WHERE verified = 0")
         list_date = cursor.fetchall()  # Собираем список всех уникальных дат в которые есть записи даннымх
 
-    if len(list_date) > 0:  # Составляем список дат в которые начилались рабочие смены с учетом времени их окончания
+    if len(list_date) > 0:  # Составляем список дат в которые начинались рабочие смены с учетом времени их окончания
         for i in list_date:
             date_old = i[0]
             date_time = datetime.datetime.strptime(i[1], '%Y-%m-%d %H:%M:%S')
