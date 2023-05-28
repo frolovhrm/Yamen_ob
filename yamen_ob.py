@@ -7,6 +7,8 @@ from cv2 import cv2
 from creat_db_ob import createNewBase
 from readTextToFields import readTextToFields
 from readTextToFields2 import readTextToFields2
+from readTextToFields3 import readTextToFields3
+
 from tqdm import tqdm
 from analitic_new import checkduble
 
@@ -170,6 +172,8 @@ if notReadedFilesInBase > 0:
 
                 if fields.date < '2022-04-04':
                     readTextToFields(fields, string_split)  # Расшифровываем и раскладываем по полям базы
+                if fields.date >= '2023-04-08':
+                    readTextToFields3(fields, string_split)  # Расшифровываем и раскладываем по полям базы
                 else:
                     readTextToFields2(fields, string_split)  # Расшифровываем и раскладываем по полям базы
                 error_log_dump = json.dumps(fields.error_log)
@@ -193,7 +197,7 @@ if notReadedFilesInBase > 0:
 print(f'Готово! \n ')
 
 Screen.notReadedFilesInBase(screen)
-
-question = input('Проверить базу на наличие задвоенных данных и сформировать окончательную таблицу (д\y - да) - ')
-if question == 'y' or question == 'д':
-    checkduble()
+#
+# question = input('Проверить базу на наличие задвоенных данных и сформировать окончательную таблицу (д\y - да) - ')
+# if question == 'y' or question == 'д':
+#     checkduble()
