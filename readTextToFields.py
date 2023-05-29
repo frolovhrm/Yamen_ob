@@ -113,12 +113,12 @@ def readTextToFields(fields, str_line):
             continue
 
         if str_line[position] == 'карта':  # Выручка карта
-            cart_profit_str = str_line[position - 2] + str_line[position - 1]
+            card_profit_str = str_line[position - 2] + str_line[position - 1]
 
             try:
-                fields.cart_profit = getfloat(cart_profit_str)
+                fields.card_profit = getfloat(card_profit_str)
             except:
-                # print(f'Error card old {fields.name} - {cart_profit_str}')
+                # print(f'Error card old {fields.name} - {card_profit_str}')
                 fields.error_log[6] = 1
 
         """ Выручка наличные """

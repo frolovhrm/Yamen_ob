@@ -137,18 +137,18 @@ def readTextToFields2(fields, str_line):
         if str_line[position] == 'По':
             # print('Cart')
             if len(str_line[position + 2]) == 1:  # если сиввол только один, добавляем из следующей позиции
-                cart_profit_str = str_line[position + 2] + str_line[position + 3]
+                card_profit_str = str_line[position + 2] + str_line[position + 3]
             else:
-                cart_profit_str = str_line[position + 2]
+                card_profit_str = str_line[position + 2]
 
             try:
-                fields.cart_profit = getfloat(cart_profit_str)
+                fields.card_profit = getfloat(card_profit_str)
             except:
-                # print(f"Ошибка cart_profit_new - {cart_profit_str}")
+                # print(f"Ошибка card_profit_new - {card_profit_str}")
                 fields.error_log[6] = 1
 
 
-            # print('Cart - ', fields.cart_profit)
+            # print('Card - ', fields.card_profit)
             position += 1
             continue
 

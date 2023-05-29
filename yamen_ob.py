@@ -23,18 +23,20 @@ class Screen:
     def __int__(self):
         self.screen_id = ''
         self.name = ''
-        self.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # Сохраняем код ошибки при заспознавании данных разряд - поле
+        self.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # Сохраняем код ошибки при заспознавании данных разряд - поле
         """ Разряды лога 0 - версия парсера
                         1 - activ
                         2 - rait
                         3 - grate
                         4 - all_profit
                         5 - cash_profit
-                        6 - cart_profit
+                        6 - card_profit
                         7 - orders
                         8 - commission
                         9 - balance
-                        10 - ошибка getFloat """
+                        10 - ошибка getFloat 
+                        11 - tips """
+
 
     def find_new_files(self):  # Отбираем подходящие файлы для сканирования и складываем их имена в базу
         count = 0
@@ -77,12 +79,13 @@ class Fields(Screen):
         self.grate = 0  # 7
         self.all_profit = 0.0  # 8
         self.cash_profit = 0.0  # 9
-        self.cart_profit = 0.0  # 10
+        self.card_profit = 0.0  # 10
         self.orders = 0  # 11
         self.commission = 0.0  # 12
         self.balance = 0.0  # 13
-        self.name = ""  # 14
-        self.verified = False  # 15
+        self.tips = 0.0 # 14
+        self.name = ""  # 15
+        self.verified = False  # 16
 
     def readImagetoText(self):
         """ Переводит картинку в строку текста"""
@@ -111,17 +114,18 @@ class Fields(Screen):
         fields.grate = 0
         fields.all_profit = 0.0
         fields.cash_profit = 0.0
-        fields.cart_profit = 0.0
+        fields.card_profit = 0.0
         fields.orders = 0
         fields.commission = 0
         fields.balance = 0.0
+        fields.tips = 0.0
 
     def getNewFile(self):
         with sq.connect(base_name) as con:  # Расшифровываем и раскладываем по полям базы
             cursor = con.cursor()
             cursor.execute(
                 "SELECT id, name FROM Screen WHERE readed = '0' AND usable = '1' LIMIT 1")  # Получаем первую запись из базы
-            fields.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            fields.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             getfilename = cursor.fetchone()
             fields.name = getfilename[1]
             screen.screen_id = getfilename[0]
@@ -180,16 +184,16 @@ if notReadedFilesInBase > 0:
                 error_log_dump = "'" + error_log_dump + "'"
                 cursor.execute(f"UPDATE Screen SET errors_log = {error_log_dump}  WHERE id = {screen.screen_id}")
                 fields.name = ("'" + fields.name + "'")
-                if fields.all_profit + fields.cart_profit + fields.cart_profit < 1:
+                if fields.all_profit + fields.cash_profit + fields.card_profit < 1:
                     cursor.execute(
                         f"UPDATE Screen SET usable = 0  WHERE name = {fields.name}")  # Поля равны нулю - статус 0
                 else:
 
                     list_filds = [fields.date, fields.time, fields.date_time, fields.activ, fields.rait, fields.grate,
-                                  fields.all_profit, fields.cash_profit, fields.cart_profit,
-                                  fields.orders, fields.commission, fields.balance,
+                                  fields.all_profit, fields.cash_profit, fields.card_profit,
+                                  fields.orders, fields.commission, fields.balance, fields.tips,
                                   str(fields.name), fields.verified]
-                    cursor.execute("INSERT INTO Fields VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    cursor.execute("INSERT INTO Fields VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                    list_filds)
                     fields.name = fields.name.replace("'", "")
                     cursor.execute('UPDATE Screen SET readed = ? WHERE name = ?', (True, fields.name))
@@ -197,7 +201,7 @@ if notReadedFilesInBase > 0:
 print(f'Готово! \n ')
 
 Screen.notReadedFilesInBase(screen)
-#
-# question = input('Проверить базу на наличие задвоенных данных и сформировать окончательную таблицу (д\y - да) - ')
-# if question == 'y' or question == 'д':
-#     checkduble()
+
+question = input('Проверить базу на наличие задвоенных данных и сформировать окончательную таблицу (д\y - да) - ')
+if question == 'y' or question == 'д':
+    checkduble()

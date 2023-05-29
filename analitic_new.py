@@ -36,11 +36,12 @@ def checkduble():
             rait = rait1 = rait2 = 0.0
             grate = grate1 = grate2 = 0
             all_profit = all_profit1 = all_profit2 = 0.0
-            cart_profit = cart_profit1 = cart_profit2 = 0.0
+            card_profit = card_profit1 = card_profit2 = 0.0
             cash_profit = cash_profit1 = cash_profit2 = 0.0
             orders = orders1 = orders2 = 0
             commission = commission1 = commission2 = 0.0
             balance = balance1 = balance2 = 0.0
+            tips = tips1 = tips2 = 0.0
 
             # вычисляем минимальное время/дата начала смены для  конкретной даты
             min_date_time = datetime.datetime.strptime(f'{list_all_date[num]} {shift_time}', '%Y-%m-%d %H:%M:%S')
@@ -62,8 +63,8 @@ def checkduble():
             for d in list_one_date:
                 with sq.connect(base_name) as con:
                     cursor = con.cursor()
-                    list_fields = f"SELECT activ, rait, grate, all_profit, cash_profit, cart_profit, orders, commission," \
-                                  f" balance FROM Fields WHERE id = {d[0]}"
+                    list_fields = f"SELECT activ, rait, grate, all_profit, cash_profit, card_profit, orders, commission," \
+                                  f" balance, tips FROM Fields WHERE id = {d[0]}"
                     cursor.execute(list_fields)
                     fields = cursor.fetchone()
                 file_date_time = datetime.datetime.strptime(f'{d[1]}', '%Y-%m-%d %H:%M:%S')
@@ -81,14 +82,16 @@ def checkduble():
                         all_profit1 = fields[3]
                     if cash_profit1 < fields[4]:
                         cash_profit1 = fields[4]
-                    if cart_profit1 < fields[5]:
-                        cart_profit1 = fields[5]
+                    if card_profit1 < fields[5]:
+                        card_profit1 = fields[5]
                     if orders1 < int(fields[6]):
                         orders1 = fields[6]
                     if commission1 < fields[7]:
                         commission1 = fields[7]
                     if balance1 < fields[8]:
                         balance1 = fields[8]
+                    if tips1 < fields[9]:
+                        tips1 = fields[9]
                 else:
                     if activ2 < int(fields[0]):
                         activ2 = fields[0]
@@ -100,14 +103,16 @@ def checkduble():
                         all_profit2 = fields[3]
                     if cash_profit2 < fields[4]:
                         cash_profit2 = fields[4]
-                    if cart_profit2 < fields[5]:
-                        cart_profit2 = fields[5]
+                    if card_profit2 < fields[5]:
+                        card_profit2 = fields[5]
                     if orders2 < int(fields[6]):
                         orders2 = fields[6]
                     if commission2 < fields[7]:
                         commission2 = fields[7]
                     if balance2 < fields[8]:
                         balance2 = fields[8]
+                    if tips2 < fields[9]:
+                        tips2 = fields[9]
 
                 if activ2 > 0:
                     activ = activ2
@@ -131,9 +136,10 @@ def checkduble():
 
                 all_profit = round(all_profit1 + all_profit2, 2)
                 cash_profit = cash_profit1 + cash_profit2
-                cart_profit = cart_profit1 + cart_profit2
+                card_profit = card_profit1 + card_profit2
                 orders = orders1 + orders2
                 commission = commission1 + commission2
+                tips = tips1 + tips2
 
                 with sq.connect(base_name) as con:  # помечаем запись как проверенную
                     cursor = con.cursor()
@@ -142,7 +148,7 @@ def checkduble():
 
             if activ + rait + grate >= 0:  # Пишем консолидированые данные в новую таблицу
                 s = f"INSERT INTO Truedate VALUES(null, '{list_all_date[num]}', {activ}, {rait}, {grate}, {all_profit}," \
-                    f" {cash_profit}, {cart_profit}, {orders}, {commission}, {balance}) "
+                    f" {cash_profit}, {card_profit}, {orders}, {commission}, {balance}, {tips}) "
                 with sq.connect(base_name) as con:  # помечаем запись как проверенную
                     cursor = con.cursor()
                     cursor.execute(s)

@@ -24,10 +24,11 @@ def createNewBase():
         grate INTEGER,
         all_profit REAL,
         cash_profit REAL,
-        cart_profit REAL,
+        card_profit REAL,
         orders INTEGER,
         commission INTEGER,
         balance REAL,
+        tips REAL,
         name TEXT NOT NULL,
         verified INTEGER NOT NULL DEFAULT 0
         )""")
@@ -40,10 +41,11 @@ def createNewBase():
         grate INTEGER,
         all_profit REAL,
         cash_profit REAL,
-        cart_profit REAL,
+        card_profit REAL,
         orders INTEGER,
         commission INTEGER,
-        balance REAL
+        balance REAL,
+        tips REAL
 
         )""")
 
