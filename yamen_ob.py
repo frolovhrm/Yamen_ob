@@ -167,21 +167,23 @@ if notReadedFilesInBase > 0:
             Fields.makeNullFields(fields)  # Сбрасываем значение полей на ноль
             string_split = Fields.getNewFile(fields)  # Выбираем файл для расшифровки, и переводим его в сплит строку
 
+
+            datetime_obj = Fields.name_to_date(fields.name)  # выделяем дату из имени
+            fields.date = str(datetime_obj.date())
+            fields.time = str(datetime_obj.time())
+            fields.date_time = datetime_obj
+
+            if fields.date < '2022-04-04':
+                readTextToFields(fields, string_split)  # Расшифровываем и раскладываем по полям базы
+            if fields.date >= '2023-04-08':
+                readTextToFields3(fields, string_split)  # Расшифровываем и раскладываем по полям базы
+            else:
+                readTextToFields2(fields, string_split)  # Расшифровываем и раскладываем по полям базы
+            error_log_dump = json.dumps(fields.error_log)
+            error_log_dump = "'" + error_log_dump + "'"
+
             with sq.connect(base_name) as con:
                 cursor = con.cursor()
-                datetime_obj = Fields.name_to_date(fields.name)  # выделяем дату из имени
-                fields.date = str(datetime_obj.date())
-                fields.time = str(datetime_obj.time())
-                fields.date_time = datetime_obj
-
-                if fields.date < '2022-04-04':
-                    readTextToFields(fields, string_split)  # Расшифровываем и раскладываем по полям базы
-                if fields.date >= '2023-04-08':
-                    readTextToFields3(fields, string_split)  # Расшифровываем и раскладываем по полям базы
-                else:
-                    readTextToFields2(fields, string_split)  # Расшифровываем и раскладываем по полям базы
-                error_log_dump = json.dumps(fields.error_log)
-                error_log_dump = "'" + error_log_dump + "'"
                 cursor.execute(f"UPDATE Screen SET errors_log = {error_log_dump}  WHERE id = {screen.screen_id}")
                 fields.name = ("'" + fields.name + "'")
                 if fields.all_profit + fields.cash_profit + fields.card_profit < 1:

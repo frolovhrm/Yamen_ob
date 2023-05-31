@@ -7,7 +7,8 @@ error_log = ''
 def readTextToFields3(fields, str_line):
     """ Парсим строку, достаем данные по полям"""
     fields.error_log[0] = 3
-    print(f"read3 {str_line}")
+
+    # print(f"read3 {str_line}")
 
     def getfloat(str_ex):
         # print(str)
@@ -73,7 +74,7 @@ def readTextToFields3(fields, str_line):
                 try:
                     fields.orders = int(str_line[position - 1])
                 except ValueError:
-                    print(f'Error orders new3 - {str_line[position - 1]} - {fields.name} - {str_line}')
+                    # print(f'Error orders new3 - {str_line[position - 1]} - {fields.name} - {str_line}')
                     fields.error_log[7] = 1
 
                 all_profit_str = str_line[position + 1]
@@ -84,18 +85,17 @@ def readTextToFields3(fields, str_line):
                     fields.all_profit = getfloat(all_profit_str)
                     # print(f'All profit new3 (try) {fields.all_profit}')
                 except:
-                    print(f"Ошибка All_profit_new3 {all_profit_str} - {fields.name} - {str_line}")
+                    # print(f"Ошибка All_profit_new3 {all_profit_str} - {fields.name} - {str_line}")
                     fields.error_log[4] = 1
 
                 try:
                     fields.balance = getfloat(balance_str)
                     # print(f'Balance new3 (try) {fields.balance}')
                 except:
-                    print(f"Ошибка Balance3 {balance_str} - {fields.name} - {str_line}")
+                    # print(f"Ошибка Balance3 {balance_str} - {fields.name} - {str_line}")
                     fields.error_log[10] = 1
             position += 1
             continue
-
 
         """ Заказов 2, Доход 2"""
         if str_line[position] == 'Доход':
@@ -103,7 +103,7 @@ def readTextToFields3(fields, str_line):
                 try:
                     fields.orders = int(str_line[position + 2])
                 except ValueError:
-                    print(f'Error orders new3.2 - {str_line[position - 1]} - {fields.name} - {str_line}')
+                    # print(f'Error orders new3.2 - {str_line[position - 1]} - {fields.name} - {str_line}')
                     fields.error_log[7] = 1
 
                 all_profit_str = str_line[position + 1]
@@ -111,7 +111,7 @@ def readTextToFields3(fields, str_line):
                     fields.all_profit = getfloat(all_profit_str)
                     # print(f'All profit new3 (try) {fields.all_profit}')
                 except:
-                    print(f"Ошибка All_profit_new3.1 {all_profit_str} - {fields.name} - {str_line}")
+                    # print(f"Ошибка All_profit_new3.1 {all_profit_str} - {fields.name} - {str_line}")
                     fields.error_log[4] = 1
             position += 1
             continue
@@ -123,7 +123,7 @@ def readTextToFields3(fields, str_line):
                 fields.cash_profit = getfloat(cash_profit_str)
                 # print(f'Cash profit new3 (try) {fields.cash_profit}')
             except:
-                print(f"Ошибка Cash profit new3 {cash_profit_str} - {fields.name} - {str_line}")
+                # print(f"Ошибка Cash profit new3 {cash_profit_str} - {fields.name} - {str_line}")
                 fields.error_log[5] = 1
             position += 1
             continue
@@ -135,7 +135,7 @@ def readTextToFields3(fields, str_line):
                 fields.card_profit = getfloat(card_profit_str)
                 # print(f'Cash profit new3 (try) {fields.cash_profit}')
             except:
-                print(f"Ошибка Card profit new3 {card_profit_str} - {fields.name} - {str_line}")
+                # print(f"Ошибка Card profit new3 {card_profit_str} - {fields.name} - {str_line}")
                 fields.error_log[6] = 1
             position += 1
             continue
@@ -147,7 +147,7 @@ def readTextToFields3(fields, str_line):
                 fields.commission = getfloat(commision_profit_str)
                 # print(f'Commission new3 (try) {fields.cash_profit}')
             except:
-                print(f"Ошибка Commission new3 {commision_profit_str} - {fields.name} - {str_line}")
+                # print(f"Ошибка Commission new3 {commision_profit_str} - {fields.name} - {str_line}")
                 fields.error_log[8] = 1
             position += 1
             continue
@@ -159,106 +159,11 @@ def readTextToFields3(fields, str_line):
                 fields.tips = getfloat(tips_profit_str)
                 # print(f'Commission new3 (try) {fields.cash_profit}')
             except:
-                print(f"Ошибка Commission new3 {tips_profit_str} - {fields.name} - {str_line}")
+                # print(f"Ошибка Commission new3 {tips_profit_str} - {fields.name} - {str_line}")
                 fields.error_log[11] = 1
             position += 1
             continue
 
-
-
-
         position += 1
 
-
-    print(fields.activ, fields.rait, fields.grate, fields.orders, fields.all_profit, fields.cash_profit, fields.card_profit, fields.balance, fields.tips)
-
-    #
-    #     """ Выручка карта """
-    #     if str_line[position] == 'По':
-    #         # print('Cart')
-    #         if len(str_line[position + 2]) == 1:  # если сиввол только один, добавляем из следующей позиции
-    #             cart_profit_str = str_line[position + 2] + str_line[position + 3]
-    #         else:
-    #             cart_profit_str = str_line[position + 2]
-    #
-    #         try:
-    #             fields.cart_profit = getfloat(cart_profit_str)
-    #         except:
-    #             # print(f"Ошибка cart_profit_new - {cart_profit_str}")
-    #             fields.error_log[6] = 1
-    #
-    #
-    #         # print('Cart - ', fields.cart_profit)
-    #         position += 1
-    #         continue
-    #
-    #     """ Выручка наличные """
-    #     if str_line[position] == 'Наличными':
-    #         if str_line[position + 1] != 'или':
-    #             # print('Cash')
-    #             if len(str_line[position + 1]) == 1:  # если сиввол только один, добавляем из следующей позиции
-    #                 cash_profit_str = str_line[position + 1] + str_line[position + 2]
-    #             else:
-    #                 cash_profit_str = str_line[position + 1]
-    #
-    #             try:
-    #                 fields.cash_profit = getfloat(cash_profit_str)
-    #             except:
-    #                 # print(f'Ошибка cash_profit_new {str_line[position]}')
-    #                 fields.error_log[5] = 1
-    #
-    #
-    #         # print(f'cash_profit - {fields.cash_profit}')
-    #         position += 1
-    #         continue
-    #
-    #     """ Комиссия """
-    #     if str_line[position] == 'Сервис':
-    #         # print('Comission')
-    #
-    #         if len(str_line[position + 2]) == 1:  # если сиввол только один, добавляем из следующей позиции
-    #             commission_str = str_line[position + 2] + str_line[position + 3]
-    #         else:
-    #             commission_str = str_line[position + 2]
-    #
-    #         try:
-    #             fields.commission = getfloat(commission_str)
-    #         except:
-    #             # print(f"Ошибка comission new - {commission_str} - {fields.name} - {str_line}")
-    #             fields.error_log[8] = 1
-    #         # print(f'Comission - {fields.commission}')
-    #         position += 1
-    #         continue
-
-#     atention = ''
-#
-#     """ Неверный скрин """
-#     for i in bed_words:
-#         if str_line[position] == i:
-#             atention = 'atention'
-#             # print(f'atention {i}')
-#             break
-#     if atention == 'atention':
-#         break
-#
-#     if str_line[position] == 'За' and str_line[position + 1] == 'неделю':
-#         break
-#
-#     if str_line[position] == 'За' and str_line[position + 2] == 'неделю':
-#         break
-#
-#     if str_line[position] == 'Сегодня':
-#         if str_line[position + 2] == '0, 00':
-#             break
-#         if str_line[position + 2] == '0,00Р':
-#             break
-#         if str_line[position + 2] == '0,00?':
-#             break
-#         if str_line[position + 2] == '0,00?Р':
-#             break
-#
-#
-# bed_words = ['История', 'Отмена', 'Обновлен', 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль',
-#              'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь', 'Поездка', 'попали', 'этот', 'Оцените',
-#              'качества', 'следующем', 'Доступно', 'комплименты', 'приоритет', 'транзакции']
-#
+    # print(fields.activ, fields.rait, fields.grate, fields.orders, fields.all_profit, fields.cash_profit, fields.card_profit, fields.balance, fields.tips)
