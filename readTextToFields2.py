@@ -48,6 +48,10 @@ def readTextToFields2(fields, str_line):
     while position < len(str_line):
         atention = ''
 
+        if position + 3 > len(str_line):
+            print('первышен размер строки')
+            break
+
         """ Неверный скрин """
         for i in bed_words:
             if str_line[position] == i:
@@ -136,17 +140,22 @@ def readTextToFields2(fields, str_line):
         """ Выручка карта """
         if str_line[position] == 'По':
             # print('Cart')
-            if len(str_line[position + 2]) == 1:  # если сиввол только один, добавляем из следующей позиции
-                card_profit_str = str_line[position + 2] + str_line[position + 3]
-            else:
-                card_profit_str = str_line[position + 2]
+            try:
+                if len(str_line[position + 2]) == 1:  # если сиmвол только один, добавляем из следующей позиции
+                    card_profit_str = str_line[position + 2] + str_line[position + 3]
+                else:
+                    card_profit_str = str_line[position + 2]
+            except:
+                fields.error_log[6] = 1
+                position += 1
+                continue
+
 
             try:
                 fields.card_profit = getfloat(card_profit_str)
             except:
                 # print(f"Ошибка card_profit_new - {card_profit_str}")
                 fields.error_log[6] = 1
-
 
             # print('Card - ', fields.card_profit)
             position += 1
@@ -209,12 +218,3 @@ def readTextToFields2(fields, str_line):
 
             # print(f'Balance - {fields.balance}')
         position += 1
-
-    # ''' Получение даты из имени файла'''
-    # date_str = fields.name.split('_')
-    # datetimeplus = date_str[1]
-    # date_split = datetimeplus.split('-')
-    # date_split.pop(-1)
-    # date_time_str = ' '.join(date_split)
-    # fields.date = datetime.datetime.strptime(date_time_str, '%Y %m %d')
-    # # fields.time = datetime.datetime.strptime(date_time_str, '%H %M %S')
