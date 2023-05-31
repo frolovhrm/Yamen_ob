@@ -1,8 +1,9 @@
-import datetime
 import json
-import sqlite3 as sq
 import os
+import datetime
+import sqlite3 as sq
 import pytesseract
+
 from cv2 import cv2
 from creat_db_ob import createNewBase
 from readTextToFields import readTextToFields
@@ -12,31 +13,42 @@ from readTextToFields3 import readTextToFields3
 from tqdm import tqdm
 from analitic_new import checkduble
 
-screenshot_path = 'C:\\Python projects\\Screenshort\\'
 base_name = 'yamen_ob.db'
 tesseract_path = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
+screenshot_path = 'C:\\Python projects\\Screenshort\\'
 
 createNewBase()
 
 
-class Screen:
+def not_readed_files_in_base():
+    with sq.connect(base_name) as con:  # Проверяем количество доступных для расшифровки файлов
+        cursor = con.cursor()
+        cursor.execute("SELECT COUNT (readed) FROM Screen WHERE readed = '0' AND usable = '1'")
+        count = cursor.fetchone()
+        count_files = count[0]
+        print(f'Всего файлов пригодных для расшифровки в базе - {count_files}')
+        return count_files
+
+
+class ScreenRead:
     def __int__(self):
         self.screen_id = ''
         self.name = ''
-        self.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # Сохраняем код ошибки при заспознавании данных разряд - поле
+        self.usable = 1
+        self.readed = 0
+        self.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # Сохраняем код ошибки при заспознавании данных
         """ Разряды лога 0 - версия парсера
-                        1 - activ
-                        2 - rait
-                        3 - grate
-                        4 - all_profit
-                        5 - cash_profit
-                        6 - card_profit
-                        7 - orders
-                        8 - commission
-                        9 - balance
-                        10 - ошибка getFloat 
-                        11 - tips """
-
+                    1 - activ
+                    2 - rait
+                    3 - grate
+                    4 - all_profit
+                    5 - cash_profit
+                    6 - card_profit
+                    7 - orders
+                    8 - commission
+                    9 - balance
+                    10 - error function getFloat 
+                    11 - tips """
 
     def find_new_files(self):  # Отбираем подходящие файлы для сканирования и складываем их имена в базу
         count = 0
@@ -52,22 +64,16 @@ class Screen:
                         if 'yandex.taximeter' in screen.name:
                             cursor = con.cursor()
                             cursor.execute(
-                                f"INSERT INTO Screen VALUES(null, {screen.name}, 1, False, null, null)")
+                                f"INSERT INTO Screen VALUES(null, {screen.name}, {screen.usable}, {screen.readed}, "
+                                f"null, null)")
                             count += 1
         print(f'... найдено подходящих для дальнейшей работы и добавленно в базу - {count} файлов \n')
 
-    def notReadedFilesInBase(self):
-        with sq.connect(base_name) as con:  # Проверяем количество доступных для расшифровки файлов
-            cursor = con.cursor()
-            cursor.execute("SELECT COUNT (readed) FROM Screen WHERE readed = '0' AND usable = '1'")
-            count = cursor.fetchone()
-            notReadedFilesInBase = count[0]
-            print(f'Всего файлов пригодных для расшифровки в базе - {notReadedFilesInBase}')
-            return notReadedFilesInBase
+
+screen = ScreenRead()
 
 
-class Fields(Screen):
-
+class Fields(ScreenRead):
     def __init__(self):
         super().__int__()
         self.id = 0  # 1
@@ -83,7 +89,7 @@ class Fields(Screen):
         self.orders = 0  # 11
         self.commission = 0.0  # 12
         self.balance = 0.0  # 13
-        self.tips = 0.0 # 14
+        self.tips = 0.0  # 14
         self.name = ""  # 15
         self.verified = False  # 16
 
@@ -108,7 +114,7 @@ class Fields(Screen):
         date_time_obj = datetime.datetime.strptime(date_time_str, '%Y %m %d %H %M %S')
         return date_time_obj
 
-    def makeNullFields(self):
+    def make_null_fields(self):
         fields.activ = 0.0
         fields.rait = 0.0
         fields.grate = 0
@@ -139,18 +145,17 @@ class Fields(Screen):
             return string_split
 
 
-screen = Screen()
-Screen.find_new_files(screen)
+ScreenRead.find_new_files(screen)
 
-notReadedFilesInBase = Screen.notReadedFilesInBase(screen)
+notReadedFilesInBase_count = not_readed_files_in_base()
 
-listNotParsFile = []
+# listNotParsFile = []
 
 fields = Fields()
 
 question = 0
 
-if notReadedFilesInBase > 0:
+if notReadedFilesInBase_count > 0:
     try:
         question = int(input('Сколько файлов расшифровать? - '))
     except ValueError:
@@ -160,18 +165,17 @@ if notReadedFilesInBase > 0:
     if question == 0:
         quit()
 
-    if question <= notReadedFilesInBase:
+    if question <= notReadedFilesInBase_count:
 
         # tqdm
         for i in tqdm(range(question)):
-            Fields.makeNullFields(fields)  # Сбрасываем значение полей на ноль
+            Fields.make_null_fields(fields)  # Сбрасываем значение полей на ноль
             string_split = Fields.getNewFile(fields)  # Выбираем файл для расшифровки, и переводим его в сплит строку
 
-
-            datetime_obj = Fields.name_to_date(fields.name)  # выделяем дату из имени
+            datetime_obj = Fields.name_to_date(fields.name)  # выделяем дату и время из имени
+            fields.date_time = datetime_obj
             fields.date = str(datetime_obj.date())
             fields.time = str(datetime_obj.time())
-            fields.date_time = datetime_obj
 
             if fields.date < '2022-04-04':
                 readTextToFields(fields, string_split)  # Расшифровываем и раскладываем по полям базы
@@ -190,7 +194,6 @@ if notReadedFilesInBase > 0:
                     cursor.execute(
                         f"UPDATE Screen SET usable = 0  WHERE name = {fields.name}")  # Поля равны нулю - статус 0
                 else:
-
                     list_filds = [fields.date, fields.time, fields.date_time, fields.activ, fields.rait, fields.grate,
                                   fields.all_profit, fields.cash_profit, fields.card_profit,
                                   fields.orders, fields.commission, fields.balance, fields.tips,
@@ -202,7 +205,7 @@ if notReadedFilesInBase > 0:
 
 print(f'Готово! \n ')
 
-Screen.notReadedFilesInBase(screen)
+not_readed_files_in_base()
 
 question = input('Проверить базу на наличие задвоенных данных и сформировать окончательную таблицу (д\y - да) - ')
 if question == 'y' or question == 'д':
