@@ -10,20 +10,15 @@ def readTextToFields2(fields, str_line):
     def getfloat(str):
         # print(str)
         new_str = str.replace(',‚', ',')
-        # print(new_str)
         new_str = new_str.replace('‚', '.')
-        # print(new_str)
         new_str = new_str.replace(',', '.')
-        # print(new_str)
         new_str = new_str.replace('Р', '')
-        # print(new_str)
         new_str = new_str.replace('>', '')
-        # print(new_str)
         new_str = new_str.replace('<', '')
-        # print(new_str)
         new_str = new_str.replace('»', '')
-        # print(new_str)
         new_str = new_str.replace('«', '')
+        new_str = new_str.replace('›', '')
+
 
         if new_str.isdigit():
             result = float(new_str)
@@ -35,7 +30,7 @@ def readTextToFields2(fields, str_line):
                 # print(f'getfloat 5.2 - {result}')
             except:
                 # print(f'Ошибка функции getFloat new - {new_str} -< {str_line} >- {fields.name}')
-                fields.error_log[11] = 1
+                fields.error_log[10] = 1
 
         return result
 
@@ -49,7 +44,7 @@ def readTextToFields2(fields, str_line):
         atention = ''
 
         if position + 3 > len(str_line):
-            print('первышен размер строки')
+            # print('первышен размер строки')
             break
 
         """ Неверный скрин """
@@ -214,7 +209,7 @@ def readTextToFields2(fields, str_line):
                 # print(f'Balance (else) new{fields.balance}')
             except:
                 # print(f"Ошибка balance new - {balance_str} - {fields.name}  - {str_line}")
-                fields.error_log[10] = 1
+                fields.error_log[9] = 1
 
             # print(f'Balance - {fields.balance}')
         position += 1

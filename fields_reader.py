@@ -3,7 +3,6 @@ import sqlite3 as sq
 import pytesseract
 
 from screen_reader import ScreenRead
-# from yamen_ob_new import fields
 
 
 from cv2 import cv2

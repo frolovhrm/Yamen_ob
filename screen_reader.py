@@ -1,3 +1,6 @@
+from tqdm import tqdm
+import sqlite3 as sq
+import os
 
 
 base_name = 'yamen_ob.db'
@@ -6,12 +9,14 @@ screenshot_path = 'C:\\Python projects\\Screenshort\\'
 
 
 class ScreenRead:
+
     def __int__(self):
-        self.name = ''
+        self.name = ""
         self.usable = 1
         self.readed = 0
         self.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # Сохраняем код ошибки при заспознавании данных
-        """ Разряды лога 0 - версия парсера
+        """ Разряды лога
+                    0 - версия парсера
                     1 - activ
                     2 - rait
                     3 - grate
@@ -22,9 +27,8 @@ class ScreenRead:
                     8 - commission
                     9 - balance
                     10 - error function getFloat 
-                    11 - tips """
-
-
+                    11 - tips 
+                    """
 
 
 
