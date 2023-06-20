@@ -42,6 +42,10 @@ def checkduble():
             commission = commission1 = commission2 = 0.0
             balance = balance1 = balance2 = 0.0
             tips = tips1 = tips2 = 0.0
+            date_text = str(list_all_date[num])
+            my_day = int(date_text[8:10])
+            my_month = int(date_text[5:7])
+            my_year = int(date_text[0:4])
 
             # вычисляем минимальное время/дата начала смены для  конкретной даты
             min_date_time = datetime.datetime.strptime(f'{list_all_date[num]} {shift_time}', '%Y-%m-%d %H:%M:%S')
@@ -134,6 +138,8 @@ def checkduble():
                 else:
                     balance = balance1
 
+
+
                 all_profit = round(all_profit1 + all_profit2, 2)
                 cash_profit = cash_profit1 + cash_profit2
                 card_profit = card_profit1 + card_profit2
@@ -147,11 +153,13 @@ def checkduble():
                     cursor.execute(ver)
 
             if activ + rait + grate >= 0:  # Пишем консолидированые данные в новую таблицу
-                s = f"INSERT INTO Truedate VALUES(null, '{list_all_date[num]}', {activ}, {rait}, {grate}, {all_profit}," \
+                s = f"INSERT INTO Truedate VALUES(null, '{list_all_date[num]}', {my_day}, {my_month}, {my_year}, {activ}, {rait}, {grate}, {all_profit}," \
                     f" {cash_profit}, {card_profit}, {orders}, {commission}, {balance}, {tips}) "
                 with sq.connect(base_name) as con:  # помечаем запись как проверенную
                     cursor = con.cursor()
                     cursor.execute(s)
+
+            # print(f' список {list_all_date[num]}, {my_day}, {my_month}, {my_year}, {activ}, {rait}, {grate}, {all_profit}, {cash_profit}, {card_profit}, {orders}, {commission}, {balance}, {tips}')
 
     print('Финальные данные сохранены в базе, таблица сформирована.')
 

@@ -36,6 +36,9 @@ def createNewBase():
         cur.execute("""CREATE TABLE IF NOT EXISTS Truedate (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         date TEXT,
+        day INTEGER,
+        month INTEGER,
+        year INTEGER,
         activ INTEGER,
         rait REAL,
         grate INTEGER,

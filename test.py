@@ -1,17 +1,42 @@
 import sqlite3 as sq
 import matplotlib.pyplot as plt
 
+with sq.connect('yamen_ob.db') as con:
+    cur = con.cursor()
+
+    cursor = con.cursor()
+    ver = f"UPDATE Fields SET verified = 0 "
+    cursor.execute(ver)
+
+    # cur.execute("""CREATE TABLE IF NOT EXISTS Truedate (
+    # id INTEGER PRIMARY KEY AUTOINCREMENT,
+    # date TEXT,
+    # day INTEGER,
+    # month INTEGER,
+    # year INTEGER,
+    # activ INTEGER,
+    # rait REAL,
+    # grate INTEGER,
+    # all_profit REAL,
+    # cash_profit REAL,
+    # card_profit REAL,
+    # orders INTEGER,
+    # commission INTEGER,
+    # balance REAL,
+    # tips REAL
+    #
+    # )""")
 
 # "SELECT date(date), COUNT(*)  FROM Fields WHERE verified = 0  GROUP BY date(date) HAVING COUNT(*) > 1")
 
-base_name = 'yamen_ob.db'
-
-squares = [1, 4, 9, 16, 25]
-
-fig, ax = plt.subplots()
-ax.plot(squares)
-
-plt.show()
+# base_name = 'yamen_ob.db'
+#
+# squares = [1, 4, 9, 16, 25]
+#
+# fig, ax = plt.subplots()
+# ax.plot(squares)
+#
+# plt.show()
 
 
 # n_date = '2021-08-07'
