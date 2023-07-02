@@ -1,6 +1,10 @@
 import sqlite3 as sq
+import os
+from dotenv import load_dotenv
 
-base_name = 'yamen_ob.db'
+load_dotenv()
+
+base_name = os.getenv('BASE_NAME')
 
 
 def checkduble():

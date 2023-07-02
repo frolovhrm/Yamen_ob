@@ -1,8 +1,12 @@
 import sqlite3 as sq
+import os
 import datetime
 from tqdm import tqdm
+from dotenv import load_dotenv
 
-base_name = 'yamen_ob.db'
+load_dotenv()
+
+base_name = os.getenv('BASE_NAME')
 shift_time = '03:00:00'  # максимальное время окончание смены за предидущую дату
 null_time = '00:00:00'
 

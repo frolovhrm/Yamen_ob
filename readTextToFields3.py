@@ -61,7 +61,7 @@ def readTextToFields3(fields, str_line):
                 fields.grate = 4
             if str_line[position + 3] == 'Серебро':
                 fields.grate = 3
-            if str_line[position + 3] == 'Золото':
+            if str_line[position + 3] == 'Золото' or 'Золот':
                 fields.grate = 2
             if str_line[position + 3] == 'Платина':
                 fields.grate = 1

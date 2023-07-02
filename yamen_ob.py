@@ -3,8 +3,9 @@ import os
 import datetime
 import sqlite3 as sq
 import pytesseract
+import logging
 
-from cv2 import cv2
+import cv2
 from creat_db_ob import createNewBase
 from readTextToFields import readTextToFields
 from readTextToFields2 import readTextToFields2
@@ -12,12 +13,18 @@ from readTextToFields3 import readTextToFields3
 
 from tqdm import tqdm
 from analitic_new import checkduble
+from dotenv import load_dotenv
 
-base_name = 'yamen_ob.db'
+load_dotenv()
+
+base_name = os.getenv('BASE_NAME')
 tesseract_path = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 screenshot_path = 'C:\\Python projects\\Screenshort\\'
 
 createNewBase()
+
+logging.basicConfig(filename='log_file.txt', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.debug('This is a log massage.')
 
 
 def not_readed_files_in_base():
@@ -64,7 +71,7 @@ class ScreenRead:
                         if 'yandex.taximeter' in screen.name:
                             cursor = con.cursor()
                             cursor.execute(
-                                f"INSERT INTO Screen VALUES(null, {screen.name}, {screen.usable}, {screen.readed}, "
+                                f"INSERT INTO Screen VALUES(null, {screen.name}, 1, 0, "
                                 f"null, null)")
                             count += 1
         print(f'... найдено подходящих для дальнейшей работы и добавленно в базу - {count} файлов \n')
