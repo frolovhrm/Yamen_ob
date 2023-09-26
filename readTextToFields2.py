@@ -10,6 +10,7 @@ def readTextToFields2(fields, str_line):
     def getfloat(str):
         # print(str)
         new_str = str.replace(',‚', ',')
+        new_str = str.replace(',‚', ',')
         new_str = new_str.replace('‚', '.')
         new_str = new_str.replace(',', '.')
         new_str = new_str.replace('Р', '')
@@ -38,7 +39,7 @@ def readTextToFields2(fields, str_line):
     position = 0
     bed_words = ['История', 'Отмена', 'Обновлен', 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль',
                  'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь', 'Поездка', 'попали', 'этот', 'Оцените',
-                 'качества', 'следующем', 'Доступно', 'комплименты', 'приоритет', 'транзакции']
+                 'качества', 'следующем', 'Доступно', 'комплименты', 'приоритет', 'транзакции', 'Реквизиты']
 
     while position < len(str_line):
         atention = ''
@@ -96,27 +97,30 @@ def readTextToFields2(fields, str_line):
                 # print(f'Activ - {fields.name} - {str_line[position + 1]} - {str_line}')
                 fields.error_log[1] = 1
 
-
-
-            fields.rait = float(str_line[position + 2])
-            if str_line[position + 3] == 'Серебро':
-                fields.grate = 4
-            if str_line[position + 3] == 'Бронза':
-                fields.grate = 3
-            if str_line[position + 3] == 'Золото':
-                fields.grate = 2
-            if str_line[position + 3] == 'Платина':
-                fields.grate = 1
-            # print('Activ - ', fields.activ, 'grait - ', fields.grate, 'rait - ', fields.rait)
-            position += 1
-            continue
+            try:
+                fields.rait = float(str_line[position + 2])
+                if str_line[position + 3] == 'Серебро':
+                    fields.grate = 4
+                if str_line[position + 3] == 'Бронза':
+                    fields.grate = 3
+                if str_line[position + 3] == 'Золото':
+                    fields.grate = 2
+                if str_line[position + 3] == 'Платина':
+                    fields.grate = 1
+                # print('Activ - ', fields.activ, 'grait - ', fields.grate, 'rait - ', fields.rait)
+                position += 1
+                continue
+            except ValueError:
+                fields.error_log[2] = 1
+                position += 1
+                continue
 
         if str_line[position] == 'Сегодня':
             """ Всего выручка """
             # print('All')
 
             if len(str_line[position + 2]) == 1:  # если сиввол только один, добавляем из следующей позиции
-                all_profit_str = str_line[position + 2] + str_line[position + 3]
+                all_profit_str = str_line[position + 2] + str_line[position + 3] + str_line[position + 4]
                 # print(f'All profit new{all_profit_str}')
             else:
                 all_profit_str = str_line[position + 2]
@@ -137,7 +141,7 @@ def readTextToFields2(fields, str_line):
             # print('Cart')
             try:
                 if len(str_line[position + 2]) == 1:  # если сиmвол только один, добавляем из следующей позиции
-                    card_profit_str = str_line[position + 2] + str_line[position + 3]
+                    card_profit_str = str_line[position + 2] + str_line[position + 3] + str_line[position + 4]
                 else:
                     card_profit_str = str_line[position + 2]
             except:
@@ -161,7 +165,7 @@ def readTextToFields2(fields, str_line):
             if str_line[position + 1] != 'или':
                 # print('Cash')
                 if len(str_line[position + 1]) == 1:  # если сиввол только один, добавляем из следующей позиции
-                    cash_profit_str = str_line[position + 1] + str_line[position + 2]
+                    cash_profit_str = str_line[position + 1] + str_line[position + 2] + str_line[position + 3]
                 else:
                     cash_profit_str = str_line[position + 1]
 
@@ -198,7 +202,7 @@ def readTextToFields2(fields, str_line):
         if str_line[position] == 'Баланс':
             # print('Balance')
             if len(str_line[position + 1]) == 1:  # если сиввол только один, добавляем из следующей позиции
-                balance_str = str_line[position + 1] + str_line[position + 2]
+                balance_str = str_line[position + 1] + str_line[position + 2] + str_line[position + 3]
                 # print(f'Balance new{balance_str}')
             else:
                 balance_str = str_line[position + 1]
