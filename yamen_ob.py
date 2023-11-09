@@ -4,15 +4,15 @@ import datetime
 import sqlite3 as sq
 import pytesseract
 import logging
-
 import cv2
+
 from creat_db_ob import createNewBase
 from readTextToFields import readTextToFields
 from readTextToFields2 import readTextToFields2
 from readTextToFields3 import readTextToFields3
+from analitic_new import checkduble
 
 from tqdm import tqdm
-from analitic_new import checkduble
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -44,7 +44,8 @@ class ScreenRead:
         self.usable = 1
         self.readed = 0
         self.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # Сохраняем код ошибки при заспознавании данных
-        """ Разряды лога 0 - версия парсера
+        """ Разряды лога 
+                    0 - версия парсера
                     1 - activ
                     2 - rait
                     3 - grate
@@ -77,9 +78,6 @@ class ScreenRead:
         print(f'... найдено подходящих для дальнейшей работы и добавленно в базу - {count} файлов \n')
 
 
-screen = ScreenRead()
-
-
 class Fields(ScreenRead):
     def __init__(self):
         super().__int__()
@@ -99,6 +97,7 @@ class Fields(ScreenRead):
         self.tips = 0.0  # 14
         self.name = ""  # 15
         self.verified = False  # 16
+
 
     def readImagetoText(self):
         """ Переводит картинку в строку текста"""
@@ -124,25 +123,25 @@ class Fields(ScreenRead):
         return date_time_obj
 
     def make_null_fields(self):
-        fields.activ = 0.0
-        fields.rait = 0.0
-        fields.grate = 0
-        fields.all_profit = 0.0
-        fields.cash_profit = 0.0
-        fields.card_profit = 0.0
-        fields.orders = 0
-        fields.commission = 0
-        fields.balance = 0.0
-        fields.tips = 0.0
+        self.activ = 0.0
+        self.rait = 0.0
+        self.grate = 0
+        self.all_profit = 0.0
+        self.cash_profit = 0.0
+        self.card_profit = 0.0
+        self.orders = 0
+        self.commission = 0
+        self.balance = 0.0
+        self.tips = 0.0
 
     def getNewFile(self):
         with sq.connect(base_name) as con:  # Расшифровываем и раскладываем по полям базы
             cursor = con.cursor()
             cursor.execute(
                 "SELECT id, name FROM Screen WHERE readed = '0' AND usable = '1' LIMIT 1")  # Получаем первую запись из базы
-            fields.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            self.error_log = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             getfilename = cursor.fetchone()
-            fields.name = getfilename[1]
+            self.name = getfilename[1]
             screen.screen_id = getfilename[0]
             string = Fields.readImagetoText(fields)
             stringforbase = string.replace('?', ' ')  # Готовим специальную строку для записи в базу
@@ -153,6 +152,8 @@ class Fields(ScreenRead):
             # print(string_split)
             return string_split
 
+
+screen = ScreenRead()
 
 ScreenRead.find_new_files(screen)
 
@@ -186,12 +187,13 @@ if notReadedFilesInBase_count > 0:
             fields.date = str(datetime_obj.date())
             fields.time = str(datetime_obj.time())
 
+            # в зависимости от персии выбираем парсер
             if fields.date < '2022-04-04':
-                readTextToFields(fields, string_split)  # Расшифровываем и раскладываем по полям базы
+                readTextToFields(fields, string_split)
             if fields.date >= '2023-04-08':
-                readTextToFields3(fields, string_split)  # Расшифровываем и раскладываем по полям базы
+                readTextToFields3(fields, string_split)
             else:
-                readTextToFields2(fields, string_split)  # Расшифровываем и раскладываем по полям базы
+                readTextToFields2(fields, string_split)
             error_log_dump = json.dumps(fields.error_log)
             error_log_dump = "'" + error_log_dump + "'"
 

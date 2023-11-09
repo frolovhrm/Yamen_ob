@@ -1,21 +1,6 @@
-
-
-# pip install opencv-python
-# pip install pytesseract
-# pip install tqdm
-# pip install python-dotenv
-
-
-pytesseract~=0.3.10
-opencv-python~=4.5.5.62
-tqdm~=4.64.1
-
-python-dotenv~=1.0.0
-
-
-#
-# matplotlib~=3.7.1
-# aiogram~=2.25.1
-#
-# numpy~=1.24.2
-# SciencePlots~=2.1.0
+opencv-python==4.5.5.62
+opencv-python-headless==4.8.0.74
+Pillow==9.2.0
+pytesseract==0.3.10
+tqdm==4.64.1
+yarl==1.9.2

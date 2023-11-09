@@ -1,31 +1,37 @@
-import sqlite3 as sq
-import matplotlib.pyplot as plt
+def decor(func):
+    def wrapper(a):
+        print(a)
+        func(a)
 
-with sq.connect('yamen_ob.db') as con:
-    cur = con.cursor()
+    return wrapper
 
-    cursor = con.cursor()
-    ver = f"UPDATE Fields SET verified = 0 "
-    cursor.execute(ver)
 
-    # cur.execute("""CREATE TABLE IF NOT EXISTS Truedate (
-    # id INTEGER PRIMARY KEY AUTOINCREMENT,
-    # date TEXT,
-    # day INTEGER,
-    # month INTEGER,
-    # year INTEGER,
-    # activ INTEGER,
-    # rait REAL,
-    # grate INTEGER,
-    # all_profit REAL,
-    # cash_profit REAL,
-    # card_profit REAL,
-    # orders INTEGER,
-    # commission INTEGER,
-    # balance REAL,
-    # tips REAL
-    #
-    # )""")
+@decor
+def fun(a):
+    b = a ** 2
+    print(b)
+
+
+fun(2)
+
+# cur.execute("""CREATE TABLE IF NOT EXISTS Truedate (
+# id INTEGER PRIMARY KEY AUTOINCREMENT,
+# date TEXT,
+# day INTEGER,
+# month INTEGER,
+# year INTEGER,
+# activ INTEGER,
+# rait REAL,
+# grate INTEGER,
+# all_profit REAL,
+# cash_profit REAL,
+# card_profit REAL,
+# orders INTEGER,
+# commission INTEGER,
+# balance REAL,
+# tips REAL
+#
+# )""")
 
 # "SELECT date(date), COUNT(*)  FROM Fields WHERE verified = 0  GROUP BY date(date) HAVING COUNT(*) > 1")
 
@@ -54,8 +60,6 @@ with sq.connect('yamen_ob.db') as con:
 #     cursor.execute(ver)
 
 
-
-
 #     # cursor = con.cursor()
 #     # cursor.execute("SELECT id, date "
 #     #                "FROM Fields WHERE verified = 0 and date(date) = ?", ('2021-08-07',))
@@ -78,7 +82,3 @@ with sq.connect('yamen_ob.db') as con:
 #         cursor = con.cursor()
 #         ver = f"UPDATE Fields SET verified = 0 WHERE id = {i}  "
 #         cursor.execute(ver)
-
-
-
-
